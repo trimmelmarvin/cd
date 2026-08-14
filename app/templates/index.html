@@ -2,52 +2,67 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Marvin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Fahrzeug-Dashboard</title>
     <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
     <header>
-        <h1>Dashboard</h1>
-        <p>Erreichbar über Web-UI und <a href="/docs">/docs</a> (API-Doku)</p>
+        <h1>Fahrzeug-Dashboard</h1>
+        <p>
+            <span id="connState" class="conn">verbinde…</span>
+            &middot; <a href="/docs">API-Doku</a>
+        </p>
     </header>
 
     <main>
-        <h2>Einträge</h2>
-        <table>
-            <thead>
-                <tr><th>ID</th><th>Name</th><th>Wert</th></tr>
-            </thead>
-            <tbody>
-                {% for item in items %}
-                <tr>
-                    <td>{{ item.id }}</td>
-                    <td>{{ item.name }}</td>
-                    <td>{{ item.value }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+        <section class="gauges">
+            <div class="gauge"
+                 data-gauge="rpm"
+                 data-label="Drehzahl"
+                 data-unit="1/min"
+                 data-max="{{ rpm_max }}"
+                 data-redline="{{ rpm_redline }}"
+                 data-major-step="1000"
+                 data-label-step="1000"
+                 data-label-divisor="1000"></div>
 
-        <h2>Neuer Eintrag</h2>
-        <form id="addForm">
-            <input type="text" id="name" placeholder="Name" required>
-            <input type="number" id="value" placeholder="Wert" required>
-            <button type="submit">Hinzufügen</button>
-        </form>
+            <div class="gauge"
+                 data-gauge="speed_kmh"
+                 data-label="Geschwindigkeit"
+                 data-unit="km/h"
+                 data-max="{{ speed_max }}"
+                 data-major-step="20"
+                 data-label-step="40"
+                 data-label-divisor="1"></div>
+        </section>
+
+        <section class="pedals">
+            <div class="pedal" data-pedal="throttle">
+                <span class="lamp"></span>
+                <span class="pedal-name">Gas</span>
+                <span class="pedal-state">nein</span>
+            </div>
+            <div class="pedal" data-pedal="brake">
+                <span class="lamp"></span>
+                <span class="pedal-name">Bremse</span>
+                <span class="pedal-state">nein</span>
+            </div>
+            <div class="pedal" data-pedal="clutch">
+                <span class="lamp"></span>
+                <span class="pedal-name">Kupplung</span>
+                <span class="pedal-state">nein</span>
+            </div>
+        </section>
+
+        <section class="controls">
+            <label>
+                <input type="checkbox" id="demoToggle" checked>
+                Demo-Modus (simulierte Fahrt)
+            </label>
+        </section>
     </main>
 
-    <script>
-        document.getElementById('addForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const name = document.getElementById('name').value;
-            const value = parseInt(document.getElementById('value').value, 10);
-            await fetch('/api/items', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ name, value })
-            });
-            location.reload();
-        });
-    </script>
+    <script src="/static/dashboard.js"></script>
 </body>
 </html>

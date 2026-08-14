@@ -1,38 +1,226 @@
+:root {
+    --bg: #101216;
+    --panel: #191d24;
+    --line: #2b313b;
+    --text: #e8ecf2;
+    --muted: #8b95a5;
+    --accent: #38bdf8;
+    --danger: #ef4444;
+    --ok: #22c55e;
+    --warn: #f59e0b;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     font-family: system-ui, sans-serif;
-    max-width: 800px;
+    max-width: 900px;
     margin: 2rem auto;
     padding: 0 1rem;
-    background: #f7f7f8;
-    color: #1a1a1a;
+    background: var(--bg);
+    color: var(--text);
 }
 
 header {
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem;
 }
 
-table {
+header h1 {
+    margin: 0 0 0.25rem;
+    font-size: 1.4rem;
+    letter-spacing: 0.02em;
+}
+
+header p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+a {
+    color: var(--accent);
+}
+
+.conn::before {
+    content: '';
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.4rem;
+    border-radius: 50%;
+    background: var(--ok);
+}
+
+.conn-error::before {
+    background: var(--danger);
+}
+
+/* --- Gauges --- */
+.gauges {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.gauge {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 0.75rem;
+}
+
+.gauge-svg {
+    display: block;
     width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2rem;
+    height: auto;
 }
 
-th, td {
-    text-align: left;
-    padding: 0.5rem;
-    border-bottom: 1px solid #ddd;
+.gauge-caption {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
 }
 
-form {
+.gauge-track {
+    fill: none;
+    stroke: #262c36;
+    stroke-width: 10;
+    stroke-linecap: round;
+}
+
+.gauge-redline {
+    fill: none;
+    stroke: var(--danger);
+    stroke-width: 10;
+    opacity: 0.35;
+}
+
+.gauge-value {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 10;
+    stroke-linecap: round;
+}
+
+.gauge-value.over-redline {
+    stroke: var(--danger);
+}
+
+.tick {
+    stroke: #4b5565;
+    stroke-width: 1.5;
+}
+
+.tick-major {
+    stroke: var(--text);
+    stroke-width: 2.5;
+}
+
+.tick-label {
+    fill: var(--muted);
+    font-size: 11px;
+    font-family: system-ui, sans-serif;
+}
+
+.needle-line {
+    stroke: var(--text);
+    stroke-width: 3;
+    stroke-linecap: round;
+}
+
+.needle-hub {
+    fill: var(--text);
+}
+
+.gauge-readout {
+    fill: var(--text);
+    font-size: 26px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    font-family: system-ui, sans-serif;
+}
+
+.gauge-unit {
+    fill: var(--muted);
+    font-size: 11px;
+    font-family: system-ui, sans-serif;
+}
+
+/* --- Pedal-Kontrollleuchten --- */
+.pedals {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.pedal {
     display: flex;
-    gap: 0.5rem;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--panel);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 1rem 0.5rem;
 }
 
-input {
-    padding: 0.4rem;
+.lamp {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background: #23282f;
+    border: 2px solid var(--line);
+    transition: background 0.08s linear, box-shadow 0.08s linear;
 }
 
-button {
-    padding: 0.4rem 1rem;
+.pedal-name {
+    color: var(--muted);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.pedal-state {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.pedal.active[data-pedal='throttle'] .lamp {
+    background: var(--ok);
+    box-shadow: 0 0 14px var(--ok);
+}
+
+.pedal.active[data-pedal='brake'] .lamp {
+    background: var(--danger);
+    box-shadow: 0 0 14px var(--danger);
+}
+
+.pedal.active[data-pedal='clutch'] .lamp {
+    background: var(--warn);
+    box-shadow: 0 0 14px var(--warn);
+}
+
+/* --- Steuerung --- */
+.controls {
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.controls label {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
     cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    .pedals {
+        grid-template-columns: 1fr;
+    }
 }
