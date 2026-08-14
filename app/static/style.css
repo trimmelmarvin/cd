@@ -1,0 +1,38 @@
+body {
+    font-family: system-ui, sans-serif;
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+    background: #f7f7f8;
+    color: #1a1a1a;
+}
+
+header {
+    margin-bottom: 2rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+th, td {
+    text-align: left;
+    padding: 0.5rem;
+    border-bottom: 1px solid #ddd;
+}
+
+form {
+    display: flex;
+    gap: 0.5rem;
+}
+
+input {
+    padding: 0.4rem;
+}
+
+button {
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+}

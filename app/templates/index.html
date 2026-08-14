@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Marvin Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>Dashboard</h1>
+        <p>Erreichbar über Web-UI und <a href="/docs">/docs</a> (API-Doku)</p>
+    </header>
+
+    <main>
+        <h2>Einträge</h2>
+        <table>
+            <thead>
+                <tr><th>ID</th><th>Name</th><th>Wert</th></tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.id }}</td>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.value }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h2>Neuer Eintrag</h2>
+        <form id="addForm">
+            <input type="text" id="name" placeholder="Name" required>
+            <input type="number" id="value" placeholder="Wert" required>
+            <button type="submit">Hinzufügen</button>
+        </form>
+    </main>
+
+    <script>
+        document.getElementById('addForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('name').value;
+            const value = parseInt(document.getElementById('value').value, 10);
+            await fetch('/api/items', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, value })
+            });
+            location.reload();
+        });
+    </script>
+</body>
+</html>
