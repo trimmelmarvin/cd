@@ -8,7 +8,9 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel, Field
 
-app = FastAPI(title="Fahrzeug-Dashboard", version="0.2.0")
+APP_VERSION = "0.3.0"
+
+app = FastAPI(title="Fahrzeug-Dashboard", version=APP_VERSION)
 
 app.mount("/static", StaticFiles(directory="app/static"), name="static")
 templates = Jinja2Templates(directory="app/templates")
@@ -102,6 +104,9 @@ def dashboard(request: Request):
         "index.html",
         {
             "request": request,
+            # Haengt an CSS/JS-URLs, damit Browser nach einem Deploy nicht
+            # die alte gecachte Version weiterverwenden.
+            "asset_version": APP_VERSION,
             "rpm_max": RPM_MAX,
             "rpm_redline": RPM_REDLINE,
             "speed_max": SPEED_MAX,

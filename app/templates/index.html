@@ -3,66 +3,94 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
     <title>Fahrzeug-Dashboard</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/style.css?v={{ asset_version }}">
 </head>
 <body>
-    <header>
-        <h1>Fahrzeug-Dashboard</h1>
-        <p>
-            <span id="connState" class="conn">verbinde…</span>
-            &middot; <a href="/docs">API-Doku</a>
-        </p>
-    </header>
-
-    <main>
-        <section class="gauges">
-            <div class="gauge"
-                 data-gauge="rpm"
-                 data-label="Drehzahl"
-                 data-unit="1/min"
-                 data-max="{{ rpm_max }}"
-                 data-redline="{{ rpm_redline }}"
-                 data-major-step="1000"
-                 data-label-step="1000"
-                 data-label-divisor="1000"></div>
-
-            <div class="gauge"
-                 data-gauge="speed_kmh"
-                 data-label="Geschwindigkeit"
-                 data-unit="km/h"
-                 data-max="{{ speed_max }}"
-                 data-major-step="20"
-                 data-label-step="40"
-                 data-label-divisor="1"></div>
-        </section>
-
-        <section class="pedals">
-            <div class="pedal" data-pedal="throttle">
-                <span class="lamp"></span>
-                <span class="pedal-name">Gas</span>
-                <span class="pedal-state">nein</span>
+    <div class="app">
+        <header class="topbar">
+            <div class="brand">
+                <span class="brand-mark" aria-hidden="true"></span>
+                <div class="brand-text">
+                    <h1>Fahrzeug-Dashboard</h1>
+                    <p>Live-Telemetrie</p>
+                </div>
             </div>
-            <div class="pedal" data-pedal="brake">
-                <span class="lamp"></span>
-                <span class="pedal-name">Bremse</span>
-                <span class="pedal-state">nein</span>
-            </div>
-            <div class="pedal" data-pedal="clutch">
-                <span class="lamp"></span>
-                <span class="pedal-name">Kupplung</span>
-                <span class="pedal-state">nein</span>
-            </div>
-        </section>
 
-        <section class="controls">
-            <label>
-                <input type="checkbox" id="demoToggle" checked>
-                Demo-Modus (simulierte Fahrt)
-            </label>
-        </section>
-    </main>
+            <div class="topbar-actions">
+                <span id="connState" class="pill">
+                    <span class="pill-dot" aria-hidden="true"></span>
+                    <span class="pill-text">verbinde…</span>
+                </span>
 
-    <script src="/static/dashboard.js"></script>
+                <label class="switch">
+                    <input type="checkbox" id="demoToggle" checked>
+                    <span class="switch-track" aria-hidden="true"></span>
+                    <span class="switch-text">Demo</span>
+                </label>
+
+                <a class="topbar-link" href="/docs">API</a>
+            </div>
+        </header>
+
+        <main>
+            <section class="gauges">
+                <div class="gauge"
+                     data-gauge="rpm"
+                     data-label="Drehzahl"
+                     data-unit="1/min"
+                     data-scale-note="×1000"
+                     data-max="{{ rpm_max }}"
+                     data-redline="{{ rpm_redline }}"
+                     data-major-step="1000"
+                     data-minor-step="250"
+                     data-label-step="1000"
+                     data-label-divisor="1000"></div>
+
+                <div class="gauge"
+                     data-gauge="speed_kmh"
+                     data-label="Geschwindigkeit"
+                     data-unit="km/h"
+                     data-max="{{ speed_max }}"
+                     data-major-step="20"
+                     data-minor-step="10"
+                     data-label-step="40"
+                     data-label-divisor="1"></div>
+            </section>
+
+            <!-- Reihenfolge wie im Fahrzeug: links Kupplung, Mitte Bremse, rechts Gas. -->
+            <section class="pedals">
+                <div class="pedal" data-pedal="clutch">
+                    <div class="pedal-head">
+                        <span class="pedal-name">Kupplung</span>
+                        <span class="lamp" aria-hidden="true"></span>
+                    </div>
+                    <div class="pedal-state">NEIN</div>
+                    <div class="pedal-bar" aria-hidden="true"><span></span></div>
+                </div>
+
+                <div class="pedal" data-pedal="brake">
+                    <div class="pedal-head">
+                        <span class="pedal-name">Bremse</span>
+                        <span class="lamp" aria-hidden="true"></span>
+                    </div>
+                    <div class="pedal-state">NEIN</div>
+                    <div class="pedal-bar" aria-hidden="true"><span></span></div>
+                </div>
+
+                <div class="pedal" data-pedal="throttle">
+                    <div class="pedal-head">
+                        <span class="pedal-name">Gas</span>
+                        <span class="lamp" aria-hidden="true"></span>
+                    </div>
+                    <div class="pedal-state">NEIN</div>
+                    <div class="pedal-bar" aria-hidden="true"><span></span></div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="/static/dashboard.js?v={{ asset_version }}"></script>
 </body>
 </html>
